@@ -3,6 +3,8 @@
 
 <head>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
 </head>
 
 <body>
@@ -13,6 +15,17 @@
     ?>
     <div class="text-end  m-3">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUser">Create user</button>
+    </div>
+
+    <div class="toast-container position-absolute top-0 end-0 p-3" style="z-index: 1056;">
+        <div id="successAlert" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    User has been created successfully!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
     </div>
 
     <div class="modal fade" id="addUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addUser" aria-hidden="true">
@@ -46,7 +59,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="createUser()">Create user</button>
+                    <button type="button" class="btn btn-primary" onclick="createUser()">Create user
+                        <span id="createUserSpinner" hidden class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -77,13 +92,7 @@
             </table>
         </div>
     </div>
-
-
-    <script>
-        function createUser() {
-            console.log("create user");
-        }
-    </script>
+    <script src="./js/index.js"></script>
 </body>
 
 </html>
