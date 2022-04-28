@@ -1,7 +1,7 @@
 <?php 
 
    function fetchDashboardData() {
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/config.php";
+        require $_SERVER['DOCUMENT_ROOT'] . "/config.php";
         require_once $_SERVER['DOCUMENT_ROOT'] . "/models/covid19Api.php";
         
         $response = $client->request('GET', 'summary');
@@ -12,9 +12,19 @@
     };
 
     function getDashboard() {
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/config.php";
-        $collection = $db->dashboard;
-        return $collection->findOne([]);
+        require $_SERVER['DOCUMENT_ROOT'] . "/config.php";
+        $dashboardCollection = $db->dashboard;
+        $dashboardData = $dashboardCollection->findOne([]);
+        $countriesCollection = $db->countries;
+        $countries = iterator_to_array($countriesCollection->find([]));
+        foreach ($dashboardData['Countries'] as $dashboardCountry) {
+            foreach ($countries as $country) {
+                if($country['Slug'] == $dashboardCountry['Slug']) {
+                    $dashboardCountry->info = $country->info;
+                    break;
+                }
+            }
+        }
+        return $dashboardData;
     }
-
 ?>

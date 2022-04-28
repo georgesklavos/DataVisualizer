@@ -14,9 +14,25 @@
     $countries = getCountries();
     ?>
 
-<div class="card border-0">
+<div class="toast-container position-absolute top-0 end-0 p-3" style="z-index: 1056;">
+        <div id="successAlertCountries" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                   Countries have been updated successfully!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+<div class="card border-0 mt-3">
         <div class="card-body pt-0">
-            <table class="table">
+        <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-primary mb-3" onclick="updateCountries()">Update countries
+                        <span id="updateCountriesSpinner" hidden class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button>
+        </div>
+            <table class="table" data-page-list="[10, 25]" data-pagination="true">
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
@@ -40,4 +56,5 @@
         </div>
     </div>
 </body>
+<script src="./js/index.js"></script>
 </html>

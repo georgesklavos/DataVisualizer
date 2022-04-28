@@ -26,13 +26,18 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
 
     include("./dashboard/admin/navBar.php");
     require_once $_SERVER['DOCUMENT_ROOT'] . "/models/dashboard.php";
+    // require_once $_SERVER['DOCUMENT_ROOT'] . "/models/countries.php";
 
-    // fetchDashboardData();
+    fetchDashboardData();
+
     $dashboarData = getDashboard();
+    // $countries = getCountries();
     ?>
 
-    <div class="row justify-content-center p-3" style="width:90%">
-        <div class="col">
+    <h3 class="text-center">Data for: <?= date('Y-m-d', strtotime($dashboarData['Date'])); ?></h3>
+
+    <div class="d-flex justify-content-evenly" style="height:50vh; max-width: 90vw;">
+        
 
             <!-- <div class="d-flex align-items-center flex-column mt-5">
             <div>
@@ -52,20 +57,23 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
                 </div>
             </div>
         </div> -->
+        <div class="w-auto">
             <canvas id="totalBarChart"></canvas>
         </div>
+      
 
 
-        <div class="col">
+        <div class="w-auto"> 
             <canvas id="newBarChart"></canvas>
         </div>
+       
 
     </div>
     <div class="row justify-content-center">
-        <div id="map" style="height: 30rem; max-width:90%"></div>
+        <div id="map" style="height: 50vh; width:90vw"></div>
     </div>
-
     <script>
+        
         //Create the map
 
         var map = L.map('map').setView([39.07, 21.82], 2);
@@ -74,16 +82,33 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
+        const countriesInfo = <?= json_encode($dashboarData['Countries']); ?>;
 
-        L.marker([39.07, 21.82]).addTo(map)
-            .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-            .openPopup();
+        // console.log(countriesInfo);
+        
+        countriesInfo.forEach((el) => {
+            if(el.info) {
+                L.marker([el.info.lat, el.info.lon]).addTo(map)
+                    .bindPopup(`
+                        <h5 class="text-center mb-1 border-bottom">${el.info.display_name}</h5>
+                        <p class="m-0"><b>New confirmed cases: </b>${el.NewConfirmed}</p>
+                        <p class="m-0"><b>Deaths today: </b>${el.NewDeaths}</p>
+                        <p class="m-0"><b>Recovered: </b>${el.NewRecovered}</p>
+                        <p class="m-0"><b>Total confirmed cases: </b>${el.TotalConfirmed}</p>
+                        <p class="m-0"><b>Total deaths: </b>${el.TotalDeaths}</p>
+                    `)
+                    .openPopup();
+            }
+        })
+     
+    
+
 
         //Total bar chart
 
         const totalLabels = [
             "Total confirmed",
-            "Total deaths"
+            "Deaths"
         ];
 
         const totalData = {
@@ -111,7 +136,7 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
         // new or daily data
         const labels = [
             "New confirmed",
-            "New deaths"
+            "Deaths"
         ];
 
         const data = {

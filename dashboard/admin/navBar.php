@@ -33,6 +33,9 @@
                     <li class="nav-item">
                         <a class="nav-link <?php if(checkUrl("/dashboard/admin/countries.php")) { echo 'active'; } ?>" href="/dashboard/admin/countries.php">Countries</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php if(checkUrl("/dashboard/admin/countrySummary.php")) { echo 'active'; } ?>" href="/dashboard/admin/countrySummary.php">Country summary</a>
+                    </li>
                 </ul>
                 <div class="d-flex navbar-nav">
                     <a class="nav-link" href="../../logout.php">Logout</a>

@@ -1,6 +1,6 @@
 <?php 
 function createUser($firstName, $lastName, $birthDate, $email, $password) {
-        require "./config.php";
+        require  $_SERVER['DOCUMENT_ROOT'] . "/config.php";
         $collection = $db->users;
         $collection->insertOne([ 
         "firstName" => $firstName,
@@ -13,7 +13,7 @@ function createUser($firstName, $lastName, $birthDate, $email, $password) {
 };
 
 function userLogin($email, $password) {
-    require "./config.php";
+    require  $_SERVER['DOCUMENT_ROOT'] . "/config.php";
     $collection = $db->users;
     $user = $collection->findOne(["email" => $email]);
     if($user) {
@@ -26,7 +26,7 @@ function userLogin($email, $password) {
 };
 
 function findUsers() {
-    require $_SERVER['DOCUMENT_ROOT']."/config.php";
+    require $_SERVER['DOCUMENT_ROOT'] . "/config.php";
     $collection = $db->users;
     return $collection->find([]);
 };
