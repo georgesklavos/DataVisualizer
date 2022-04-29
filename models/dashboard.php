@@ -2,7 +2,7 @@
 
    function fetchDashboardData() {
         require $_SERVER['DOCUMENT_ROOT'] . "/config.php";
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/models/covid19Api.php";
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/utilities/covid19Api.php";
         
         $response = $client->request('GET', 'summary');
         $collection = $db->dashboard;

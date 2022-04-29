@@ -33,28 +33,33 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">Create user</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" id="closeAddUser" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="firstName" class="form-label">First name:</label>
                         <input type="text" class="form-control" id="firstName" placeholder="First name">
+                        <span id="invalidFirstName" class="invalid-feedback"></span>
                     </div>
                     <div class="mb-3">
                         <label for="lastName" class="form-label">Last name:</label>
                         <input type="text" class="form-control" id="lastName" placeholder="Last name">
+                        <span id="invalidLastName" class="invalid-feedback"></span>
                     </div>
                     <div class="mb-3">
                         <label for="birthDate" class="form-label">Birth date:</label>
                         <input type="date" class="form-control" id="birthDate" placeholder="Birth date">
+                        <span id="invalidBirthDate" class="invalid-feedback"></span>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email:</label>
                         <input type="email" class="form-control" id="email" placeholder="Email address">
+                        <span id="invalidEmail" class="invalid-feedback"></span>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password:</label>
                         <input type="text" class="form-control" id="password" placeholder="Password">
+                        <span id="invalidPassword" class="invalid-feedback"></span>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -92,7 +97,7 @@
             </table>
         </div>
     </div>
-    <script src="./js/index.js"></script>
+    <script src="./js/users.js"></script>
 </body>
 
 </html>

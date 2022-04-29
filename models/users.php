@@ -31,4 +31,11 @@ function findUsers() {
     return $collection->find([]);
 };
 
+function checkEmail($email) {
+    require $_SERVER['DOCUMENT_ROOT'] . "/config.php";
+    $collection = $db->users;
+
+    return $collection->findOne(['email' => $email]) ? true : false;
+}
+
 ?>

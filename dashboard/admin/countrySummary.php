@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
 </head>
 
 <body>
@@ -33,7 +36,7 @@
                     <label for="fromPeriod" class="form-label m-0">From:</label>
                 </div>
                 <div class="col-auto">
-                    <input type="date" class="form-control" id="fromPeriod" placeholder="From">
+                    <input type="date" class="form-control" id="fromPeriod" placeholder="From" max="<?= date('Y-m-d'); ?>">
                 </div>
             </div>
             <div class="row g-3 align-items-center">
@@ -41,7 +44,7 @@
                     <label for="toPeriod" class="form-label m-0">To:</label>
                 </div>
                 <div class="col-auto">
-                    <input type="date" class="form-control" id="toPeriod" placeholder="To">
+                    <input type="date" class="form-control" id="toPeriod" placeholder="To" disabled max="<?= date('Y-m-d'); ?>">
                 </div>
             </div>
         </div>
@@ -53,8 +56,27 @@
     <div class="spinner-border text-primary" id="loader" role="status" hidden>
         <span class="visually-hidden">Loading...</span>
     </div>
+
+
+
+
+    <div class="d-flex justify-content-between">
+        <div style="width: 43vw;">
+            <canvas id="totalSummaryBarChart"></canvas>
+        </div>
+        <div>
+            <div id="countryMap" style="height: 35vh; width:30vw;"></div>
+        </div>
+    </div>
+    <div class="d-flex pl-2">
+        <div style="height: 43vh; width:100vw;">
+            <canvas id="summaryLineChart"></canvas>
+        </div>
+    </div>
+
+
 </body>
-<script src="./js/index.js"></script>
+<script src="./js/summary.js"></script>
 <style>
     #loader {
         position: absolute;

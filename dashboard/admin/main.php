@@ -9,7 +9,7 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="overflow-x: hidden;">
 
 <head>
     <meta charset="UTF-8">
@@ -36,7 +36,7 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
 
     <h3 class="text-center">Data for: <?= date('Y-m-d', strtotime($dashboarData['Date'])); ?></h3>
 
-    <div class="d-flex justify-content-evenly" style="height:50vh; max-width: 90vw;">
+    <div class="d-flex justify-content-evenly" style="height:37vh; max-width: 90vw;">
         
 
             <!-- <div class="d-flex align-items-center flex-column mt-5">
@@ -57,13 +57,13 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
                 </div>
             </div>
         </div> -->
-        <div class="w-auto">
+        <div style="width:35vw !important;">
             <canvas id="totalBarChart"></canvas>
         </div>
       
 
 
-        <div class="w-auto"> 
+        <div style="width:35vw !important;"> 
             <canvas id="newBarChart"></canvas>
         </div>
        

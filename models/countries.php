@@ -3,14 +3,15 @@ use GuzzleHttp\Client;
 
 function fetchCountries() {
     require $_SERVER['DOCUMENT_ROOT'] . "/config.php";
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/models/covid19Api.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/utilities/covid19Api.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/utilities/nominatimApi.php";
     
     $response = $client->request('GET', 'countries');
     $collection = $db->countries;
     $countries = json_decode($response->getBody());
 
 //'curl' => array( CURLOPT_SSL_VERIFYPEER => false)
-    $clientLocationData = new Client(['verify' => false,'base_uri' => "https://nominatim.openstreetmap.org/"]); 
+    
     ini_set('max_execution_time', '700');  
         
     foreach($countries as $country) {
