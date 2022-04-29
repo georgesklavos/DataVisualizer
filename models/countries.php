@@ -32,6 +32,6 @@ function fetchCountries() {
 function getCountries() {
     require $_SERVER['DOCUMENT_ROOT'] . "/config.php";
     $collection = $db->countries;
-    return $collection->find([]);
+    return $collection->find([])->toArray();
 }
 ?>

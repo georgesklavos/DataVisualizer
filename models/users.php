@@ -1,5 +1,5 @@
 <?php 
-function createUser($firstName, $lastName, $birthDate, $email, $password) {
+function createUser($firstName, $lastName, $birthDate, $email, $password, $country) {
         require  $_SERVER['DOCUMENT_ROOT'] . "/config.php";
         $collection = $db->users;
         $collection->insertOne([ 
@@ -7,6 +7,7 @@ function createUser($firstName, $lastName, $birthDate, $email, $password) {
         "lastName" => $lastName,
         "birthDate" => $birthDate,
         "email" => $email,
+        "country" => $country,
         "password" => password_hash($password, PASSWORD_BCRYPT),
         "role" => 2
     ]);

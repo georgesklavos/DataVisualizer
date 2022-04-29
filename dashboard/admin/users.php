@@ -1,16 +1,23 @@
+
+<?php
+session_start();
+// session_destroy();
+
+if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
+  session_destroy();
+  header("location: /login.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
-</head>
 
 <body>
     <?php include($_SERVER['DOCUMENT_ROOT'] . "/dashboard/admin/navBar.php");
     require $_SERVER['DOCUMENT_ROOT'] . "/models/users.php";
+    require $_SERVER['DOCUMENT_ROOT'] . "/models/countries.php";
     $users = findUsers();
+    $countries = getCountries();
 
     ?>
     <div class="text-end  m-3">
@@ -56,6 +63,23 @@
                         <input type="email" class="form-control" id="email" placeholder="Email address">
                         <span id="invalidEmail" class="invalid-feedback"></span>
                     </div>
+                    <div class="mb-3">
+                        <label for="country" class="form-label">Country:</label>
+                        <div class="dropdown" id="country">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="countrySelecion" data-bs-toggle="dropdown" aria-expanded="false">
+                            Select country
+                        </button>
+                        <ul id="userCountries" class="dropdown-menu" aria-labelledby="countrySelecion" style="height: 200px; overflow-y:scroll;">
+                            <?php foreach ($countries as $country) : ?>
+                                <li class="dropdown-item" id="<?= $country["_id"]; ?>">
+                                    <?= $country["Country"]; ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                        <span id="invalidCountry" class="invalid-feedback"></span>
+                    </div>
+                   
                     <div class="mb-3">
                         <label for="password" class="form-label">Password:</label>
                         <input type="text" class="form-control" id="password" placeholder="Password">

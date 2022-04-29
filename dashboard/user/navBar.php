@@ -1,3 +1,13 @@
+<?php
+session_start();
+// session_destroy();
+
+if (isset($_SESSION["role"]) && $_SESSION["role"] != 2) {
+    session_destroy();
+    header("location: /login.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,14 +16,14 @@
 </head>
 
 <body>
-    <?php 
-    
-    function checkUrl($value) {
+    <?php
+
+    function checkUrl($value)
+    {
         if (str_contains($_SERVER["REQUEST_URI"], $value)) {
             return true;
         }
         return false;
-
     }
     ?>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -25,10 +35,14 @@
             <div class="collapse navbar-collapse" id="navBarData">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link <?php if(checkUrl("/index.php")) { echo 'active'; } ?>" aria-current="page" href="../../index.php">Home</a>
+                        <a class="nav-link <?php if (checkUrl("/index.php")) {
+                                                echo 'active';
+                                            } ?>" aria-current="page" href="../../index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php if(checkUrl("/dashboard/user/map.php")) { echo 'active'; } ?>" href="/dashboard/user/map.php">Map</a>
+                        <a class="nav-link <?php if (checkUrl("/dashboard/user/map.php")) {
+                                                echo 'active';
+                                            } ?>" href="/dashboard/user/map.php">Map</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link disabled">Disabled</a>
