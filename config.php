@@ -5,6 +5,7 @@
             $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
             $dotenv->load();
         }
+        error_log(print_r($_ENV, TRUE));
         $manager = new MongoDB\Driver\Manager($_ENV["dbUrl"]);
         $db = (new MongoDB\Client)->{$_ENV["dbName"]};
     }
