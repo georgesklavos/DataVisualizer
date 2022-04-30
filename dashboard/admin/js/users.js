@@ -4,8 +4,7 @@ let lastName = document.getElementById('lastName');
 let birthDate = document.getElementById('birthDate');
 let email = document.getElementById('email');
 let password = document.getElementById('password');
-let countryOptions = document.querySelectorAll("#userCountries > li");
-let selectedCountry = null;
+let selectedCountry = document.getElementById("usersCountry");
 
 // error messages
 let firstNameErr = document.getElementById('invalidFirstName');
@@ -14,17 +13,6 @@ let birthDateErr = document.getElementById('invalidBirthDate');
 let emailErr = document.getElementById('invalidEmail');
 let passwordErr = document.getElementById('invalidPassword');
 let countryErr = document.getElementById('invalidCountry');
-
-
-countryOptions.forEach((el) => {
-    el.addEventListener("click", function () {
-      selectedCountry = {
-        id: this.getAttribute("id"),
-        name: this.innerText,
-      };
-      document.getElementById("countrySelecion").innerText = selectedCountry.name;
-    });
-  });
 
 
 function checkData() {
@@ -69,9 +57,8 @@ function checkData() {
         valid = false;
     }
     
-    console.log(selectedCountry);
-    if(selectedCountry == null) {
-        // document.getElementById('countrySelecion').classList.add("is-invalid");
+    if(selectedCountry.value == 'Choose a country') {
+        selectedCountry.classList.add("is-invalid");
         countryErr.innerHTML = "Please select a country";
         countryErr.style.display = 'block';
         valid = false;
@@ -80,24 +67,27 @@ function checkData() {
     return valid;
 }
 
+function resetForm() {
+    document.querySelectorAll('input').forEach(el => {
+        el.value = '';
+    });
+    selectedCountry.selectedIndex = 0;
+}
+
+document.getElementById('addUser').addEventListener('hide.bs.modal',() => {
+    resetForm();
+})
+
 async function createUser() {
     
     if(checkData()) {
         document.getElementById("createUserSpinner").hidden = false;
-        await fetch(`/api/users/create.php?firstName=${firstName.value}&lastName=${lastName.value}&birthDate=${birthDate.value}&email=${email.value}&password=${password.value}&country=${selectedCountry.id}`,{
+        await fetch(`/api/users/create.php?firstName=${firstName.value}&lastName=${lastName.value}&birthDate=${birthDate.value}&email=${email.value}&password=${password.value}&country=${selectedCountry.value}`,{
             method: "POST"
         });
     
         document.getElementById("createUserSpinner").hidden = true;
-    
-        document.querySelectorAll('input').forEach(el => {
-            el.value = '';
-        });
-
-        document.getElementById("countrySelecion").innerText = 'Select country';
-        selectedCountry = null;
-        countryErr.style.display = 'none';
-
+        resetForm();
         const successAlert = document.getElementById('successAlert');
     
         const toast = new bootstrap.Toast(successAlert);

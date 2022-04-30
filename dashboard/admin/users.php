@@ -65,18 +65,12 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
                     </div>
                     <div class="mb-3">
                         <label for="country" class="form-label">Country:</label>
-                        <div class="dropdown" id="country">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="countrySelecion" data-bs-toggle="dropdown" aria-expanded="false">
-                            Select country
-                        </button>
-                        <ul id="userCountries" class="dropdown-menu" aria-labelledby="countrySelecion" style="height: 200px; overflow-y:scroll;">
+                        <select id="usersCountry" name="country" class="form-select" aria-label="Default select example">
+                            <option selected>Choose a country</option>
                             <?php foreach ($countries as $country) : ?>
-                                <li class="dropdown-item" id="<?= $country["_id"]; ?>">
-                                    <?= $country["Country"]; ?>
-                                </li>
+                                <option value="<?= $country["_id"]; ?>"><?= $country["Country"]; ?></option>
                             <?php endforeach; ?>
-                        </ul>
-                    </div>
+                        </select>
                         <span id="invalidCountry" class="invalid-feedback"></span>
                     </div>
                    

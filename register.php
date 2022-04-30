@@ -11,9 +11,13 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 // Include config file
 require_once "config.php";
 
+// Include countries file to access the functions
+require $_SERVER['DOCUMENT_ROOT'] . "/models/countries.php";
+$countries = getCountries();
+
 // Define variables and initialize with empty values
-$firstName = $lastName = $birthDate = $email = $password = "";
-$firstName_err = $lastName_err = $birthDate_err = $email_err = $password_err = $login_err = "";
+$firstName = $lastName = $birthDate = $email = $password = $countryId = "";
+$firstName_err = $lastName_err = $birthDate_err = $email_err = $password_err = $login_err = $country_err = "";
 
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -52,10 +56,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $password = trim($_POST["password"]);
     }
+
+    if($_POST['country'] == 'Choose a country' ) {
+        $country_err = "Please select a country";
+    }else {
+        $countryId = $_POST['country'];
+    }
+
     if (empty($firstName_err) && empty($lastName_err) && empty($birthDate_err) && empty($email_err) && empty($password_err)) {
         require "./models/users.php";
 
-        createUser($firstName, $lastName, $birthDate, $email, $password);
+        createUser($firstName, $lastName, $birthDate, $email, $password, $countryId);
         $user = userLogin($email, $password);
         if ($user) {
             session_start();
@@ -83,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <title>Register</title>
 </head>
-
+<?php  var_dump($_POST)?>
 <body>
     <div class="vh-100 d-flex justify-content-center align-items-center">
         <div class="card w-25">
@@ -111,6 +122,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <label for="email" class="form-label">Email:</label>
                         <input type="email" name="email" class="form-control <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" id="email" placeholder="Email address">
                         <span class="invalid-feedback"><?php echo $email_err; ?></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="country" class="form-label">Country:</label>
+                        <select name="country" class="form-select <?php echo (!empty($country_err)) ? 'is-invalid' : ''; ?>" aria-label="Default select example">
+                            <option selected>Choose a country</option>
+                            <?php foreach ($countries as $country) : ?>
+                                <option value="<?= $country["_id"]; ?>"><?= $country["Country"]; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <span id="invalidCountry" class="invalid-feedback"><?php echo $country_err; ?></span>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password:</label>
