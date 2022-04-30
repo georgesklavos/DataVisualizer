@@ -43,6 +43,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["id"] = $user['_id'];
             $_SESSION["email"] = $user['email'];
             $_SESSION["role"] = $user['role'];
+            if(isset($user['country'])) {
+                $_SESSION['countryId'] = $user['country'];
+            }
             //   Redirect user to welcome page
             header("location: index.php");
             // var_dump($_SESSION);

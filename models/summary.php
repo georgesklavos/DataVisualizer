@@ -1,32 +1,39 @@
 <?php 
 
-    function fetchCountrySummary($country, $from, $to) {
+    function fetchCountrySummary($countryId, $from, $to) {
         require $_SERVER['DOCUMENT_ROOT'] . "/config.php";
         require_once $_SERVER['DOCUMENT_ROOT'] . "/utilities/covid19Api.php";
         require_once $_SERVER['DOCUMENT_ROOT'] . "/utilities/nominatimApi.php";
 
-        $countrySummaryData = new stdClass();
-        $countrySummaryData->country = $country;
-        $countrySummaryData->from = $from;
-        $countrySummaryData->to = $to;
+        $collectionCountries = $db->countries;
 
-        $collection = $db->countrySummary;
-
-        $responseTotal = $client->request('GET', 'total/country/'.$country);
-        $countryTotal = json_decode($responseTotal->getBody());
+        $countrySelected = $collectionCountries->findOne(['_id' => new MongoDB\BSON\ObjectId($countryId)]);
         
-        $response = $client->request('GET', 'country/'.$country.'?from='.$from.'&to='.$to);
-        $countrySummaryCovid = json_decode($response->getBody());
-
-        $countrySummaryData->covidData = $countrySummaryCovid;
-        $countrySummaryData->total = end(array_values($countryTotal));
+        if($countrySelected) {
+            $countrySummaryData = new stdClass();
+            $countrySummaryData->country = $countrySelected['Country'];
+            $countrySummaryData->from = $from;
+            $countrySummaryData->to = $to;
+    
+            $collection = $db->countrySummary;
+    
+            $responseTotal = $client->request('GET', 'total/country/'.$countrySelected['Country']);
+            $countryTotal = json_decode($responseTotal->getBody());
             
-        $responseLocation = $clientLocationData->request('GET', 'search.php?q='. $country .'&polygon_geojson=1&format=jsonv2&accept-language=en');
-        $responseLocation = json_decode($responseLocation->getBody());
-        
-        $countrySummaryData->location = array_values($responseLocation)[0];
+            $response = $client->request('GET', 'country/'.$countrySelected['Country'].'?from='.$from.'&to='.$to);
+            $countrySummaryCovid = json_decode($response->getBody());
+    
+            $countrySummaryData->covidData = $countrySummaryCovid;
+            $countrySummaryData->total = end(array_values($countryTotal));
+                
+            $responseLocation = $clientLocationData->request('GET', 'search.php?q='. $countrySelected['Country'] .'&polygon_geojson=1&format=jsonv2&accept-language=en');
+            $responseLocation = json_decode($responseLocation->getBody());
+            
+            $countrySummaryData->location = array_values($responseLocation)[0];
+    
+            $collection->updateOne(['country' => $countrySummaryData->country, 'from' => $countrySummaryData->from, 'to' => $countrySummaryData->to], ['$set' => $countrySummaryData], ["upsert" => true]);
+        }
 
-        $collection->updateOne(['country' => $countrySummaryData->country, 'from' => $countrySummaryData->from, 'to' => $countrySummaryData->to], ['$set' => $countrySummaryData], ["upsert" => true]);
 
         // foreach($countries as $country) {
         //     // https://nominatim.openstreetmap.org/search?<params>
@@ -42,12 +49,17 @@
         // }
     }
 
-    function getCountrySummary($country, $from, $to) {
+    function getCountrySummary($countryId, $from, $to) {
 
         require $_SERVER['DOCUMENT_ROOT'] . "/config.php";
-        $collection = $db->countrySummary;
+        $collectionCountries = $db->countries;
+        $countrySelected = $collectionCountries->findOne(['_id' => new MongoDB\BSON\ObjectId($countryId)]);
 
-        return $collection->findOne(['country' => $country, 'from' => $from, 'to' => $to]);
+        if($countrySelected) {
+            $collection = $db->countrySummary;
+    
+            return $collection->findOne(['country' => $countrySelected['Country'], 'from' => $from, 'to' => $to]);
+        }
     }
 
     ?>

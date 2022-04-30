@@ -42,10 +42,7 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] != 2) {
                     <li class="nav-item">
                         <a class="nav-link <?php if (checkUrl("/dashboard/user/map.php")) {
                                                 echo 'active';
-                                            } ?>" href="/dashboard/user/map.php">Map</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled">Disabled</a>
+                                            } ?>" href="/dashboard/user/countryStats.php">Country stats</a>
                     </li>
                 </ul>
                 <div class="d-flex navbar-nav">

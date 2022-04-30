@@ -1,31 +1,18 @@
-let selectedCountry = null;
+let selectedCountry = document.getElementById('usersCountry').innerHTML;
 const selectedFrom = document.getElementById("fromPeriod");
 const selectedTo = document.getElementById("toPeriod");
 const searchButton = document.getElementById("searchForData");
 const loader = document.getElementById("loader");
-let countryOptions = document.querySelectorAll("#countriesSelection > li");
 let resultSummary = {};
 let map;
 
 function checkForSelectedData() {
   searchButton.disabled =
-    (selectedCountry != null &&
-      selectedFrom.value != "" &&
+    (selectedFrom.value != "" &&
       selectedTo.value != "") == true
       ? false
       : true;
 }
-
-countryOptions.forEach((el) => {
-  el.addEventListener("click", function () {
-    selectedCountry = {
-      id: this.getAttribute("id"),
-      name: this.innerText,
-    };
-    document.getElementById("countries").innerText = selectedCountry.name;
-    checkForSelectedData();
-  });
-});
 
 selectedFrom.addEventListener("change", function () {
   checkForSelectedData();
@@ -146,7 +133,7 @@ searchButton.addEventListener("click", async function () {
   console.log(selectedTo.value);
   loader.hidden = false;
   await fetch(
-    `/api/summary/countrySummary.php?countryId=${selectedCountry.id}&from=${selectedFrom.value}&to=${selectedTo.value}`
+    `/api/summary/countrySummary.php?countryId=${selectedCountry}&from=${selectedFrom.value}&to=${selectedTo.value}`
   )
     .then((res) => res.json())
     .then((data) => {

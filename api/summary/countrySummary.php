@@ -6,7 +6,7 @@ header('Content-Type: application/json');
 // echo json_encode(iterator_to_array(findUsers()));
 
   require $_SERVER['DOCUMENT_ROOT'] . "/models/summary.php";
-  fetchCountrySummary($_GET['country'], $_GET['from'],$_GET['to']);
+  fetchCountrySummary($_GET['countryId'], $_GET['from'],$_GET['to']);
 
-  echo json_encode(getCountrySummary($_GET['country'], $_GET['from'],$_GET['to']));
+  echo json_encode(getCountrySummary($_GET['countryId'], $_GET['from'],$_GET['to']));
 ?>
