@@ -2,7 +2,7 @@ async function updateCountries() {
   document.getElementById("updateCountriesSpinner").hidden = false;
 
   await fetch("/api/countries/update.php", {
-    method: "POST",
+    method: "PUT",
   }).then(() => {
     const successAlert = document.getElementById("successAlertCountries");
 

@@ -36,7 +36,7 @@ function checkEmail($email) {
     require $_SERVER['DOCUMENT_ROOT'] . "/config.php";
     $collection = $db->users;
 
-    return $collection->findOne(['email' => $email]) ? true : false;
+    return $collection->findOne(['email' => $email]) ? 'true' : 'false';
 }
 
 ?>

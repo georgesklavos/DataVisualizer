@@ -1,11 +1,10 @@
-
 <?php
 session_start();
 // session_destroy();
-
-if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
-  session_destroy();
-  header("location: /login.php");
+// error_log(print_r($_SESSION, TRUE));
+if (!isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
+    session_destroy();
+    header("location: /login.php");
 }
 ?>
 
@@ -73,7 +72,7 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
                         </select>
                         <span id="invalidCountry" class="invalid-feedback"></span>
                     </div>
-                   
+
                     <div class="mb-3">
                         <label for="password" class="form-label">Password:</label>
                         <input type="text" class="form-control" id="password" placeholder="Password">

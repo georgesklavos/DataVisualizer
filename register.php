@@ -3,16 +3,18 @@
 session_start();
 
 // Check if the user is already logged in, if yes then redirect him to welcome page
-if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-    header("location: index.php");
-    exit;
-}
+// if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+//     header("location: index.php");
+//     exit;
+// }
 
 // Include config file
 require_once "config.php";
 
 // Include countries file to access the functions
 require $_SERVER['DOCUMENT_ROOT'] . "/models/countries.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/models/users.php";
+
 $countries = getCountries();
 
 // Define variables and initialize with empty values
@@ -46,7 +48,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if email is empty
     if (empty(trim($_POST["email"]))) {
         $email_err = "Please enter email.";
-    } else {
+    }else if(checkEmail(trim($_POST["email"])) == 'true') {
+        $email_err = "Email already in use.";
+    }else {
         $email = trim($_POST["email"]);
     }
 
@@ -64,7 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (empty($firstName_err) && empty($lastName_err) && empty($birthDate_err) && empty($email_err) && empty($password_err)) {
-        require "./models/users.php";
 
         createUser($firstName, $lastName, $birthDate, $email, $password, $countryId);
         $user = userLogin($email, $password);
@@ -94,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <title>Register</title>
 </head>
-<?php  var_dump($_POST)?>
+
 <body>
     <div class="vh-100 d-flex justify-content-center align-items-center">
         <div class="card w-25">

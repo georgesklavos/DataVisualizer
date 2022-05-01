@@ -1,9 +1,14 @@
 <?php
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
-header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
+
+require_once $_SERVER['DOCUMENT_ROOT'] . "/utilities/apiUtils.php";
+
+checkMethod('POST');
+
 require $_SERVER['DOCUMENT_ROOT'] . "/models/users.php";
 
-createUser($_GET["firstName"], $_GET["lastName"], $_GET["birthDate"], $_GET["email"], $_GET["password"],$_GET["country"]);
+$data = json_decode(file_get_contents("php://input"));
+createUser($data->firstName, $data->lastName, $data->birthDate,$data->email, $data->password,$data->country);
 
 echo "User created!";

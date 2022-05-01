@@ -2,7 +2,8 @@
 session_start();
 // session_destroy();
 
-if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
+
+if (!isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
     session_destroy();
     header("location: /login.php");
 }
@@ -37,9 +38,9 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
     <h3 class="text-center">Data for: <?= date('Y-m-d', strtotime($dashboarData['Date'])); ?></h3>
 
     <div class="d-flex justify-content-evenly" style="height:37vh; max-width: 90vw;">
-        
 
-            <!-- <div class="d-flex align-items-center flex-column mt-5">
+
+        <!-- <div class="d-flex align-items-center flex-column mt-5">
             <div>
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
@@ -60,20 +61,19 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
         <div style="width:35vw !important;">
             <canvas id="totalBarChart"></canvas>
         </div>
-      
 
 
-        <div style="width:35vw !important;"> 
+
+        <div style="width:35vw !important;">
             <canvas id="newBarChart"></canvas>
         </div>
-       
+
 
     </div>
     <div class="row justify-content-center">
         <div id="map" style="height: 50vh; width:90vw"></div>
     </div>
     <script>
-        
         //Create the map
 
         var map = L.map('map').setView([39.07, 21.82], 2);
@@ -85,9 +85,9 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
         const countriesInfo = <?= json_encode($dashboarData['Countries']); ?>;
 
         // console.log(countriesInfo);
-        
+
         countriesInfo.forEach((el) => {
-            if(el.info) {
+            if (el.info) {
                 L.marker([el.info.lat, el.info.lon]).addTo(map)
                     .bindPopup(`
                         <h5 class="text-center mb-1 border-bottom">${el.info.display_name}</h5>
@@ -100,8 +100,8 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
                     .openPopup();
             }
         })
-     
-    
+
+
 
 
         //Total bar chart

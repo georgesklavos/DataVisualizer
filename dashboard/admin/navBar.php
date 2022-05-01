@@ -1,11 +1,11 @@
 <?php
-session_start();
+// session_start();
 // session_destroy();
 
-if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
-    session_destroy();
-    header("location: /login.php");
-}
+// if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
+//     session_destroy();
+//     header("location: /login.php");
+// }
 ?>
 
 <!DOCTYPE html>

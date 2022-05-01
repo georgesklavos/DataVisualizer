@@ -2,10 +2,10 @@
 session_start();
 // session_destroy();
 
-if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
+if (!isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
     session_destroy();
     header("location: /login.php");
-}
+} 
 ?>
 
 <!DOCTYPE html>
