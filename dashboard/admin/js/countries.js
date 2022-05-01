@@ -10,4 +10,5 @@ async function updateCountries() {
     toast.show();
   });
   document.getElementById("updateCountriesSpinner").hidden = true;
+  location.reload();
 }

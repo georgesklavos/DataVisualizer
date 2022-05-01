@@ -19,7 +19,7 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
 <body>
     <?php 
     require $_SERVER['DOCUMENT_ROOT'] . "/models/countries.php";
-    fetchCountries();
+    // fetchCountries();
     include($_SERVER['DOCUMENT_ROOT'] . "/dashboard/admin/navBar.php");
     $countries = getCountries();
     ?>

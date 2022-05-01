@@ -96,6 +96,7 @@ async function createUser() {
         // let modal = bootstrap.Modal.getInstance(document.getElementById('addUser'))
         // modal.hide();
         document.getElementById('closeAddUser').click();
+        location.reload();
     }
 
 

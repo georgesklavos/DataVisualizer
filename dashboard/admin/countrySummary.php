@@ -3,8 +3,8 @@ session_start();
 // session_destroy();
 
 if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
-  session_destroy();
-  header("location: /login.php");
+    session_destroy();
+    header("location: /login.php");
 }
 ?>
 
@@ -28,17 +28,14 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
     ?>
 
     <div class="d-flex justify-content-evenly mt-3 mb-3">
-        <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="countries" data-bs-toggle="dropdown" aria-expanded="false">
-                Select country
-            </button>
-            <ul id="countriesSelection" class="dropdown-menu" aria-labelledby="countries" style="height: 200px; overflow-y:scroll;">
+
+        <div>
+            <select id="countrySummary" name="country" class="form-select" aria-label="Default select example">
+                <option selected>Choose a country</option>
                 <?php foreach ($countries as $country) : ?>
-                    <li class="dropdown-item" id="<?= $country["_id"]; ?>">
-                        <?= $country["Country"]; ?>
-                    </li>
+                    <option value="<?= $country["_id"]; ?>"><?= $country["Country"]; ?></option>
                 <?php endforeach; ?>
-            </ul>
+            </select>
         </div>
         <div class="d-flex">
             <div class="row g-3 align-items-center">
