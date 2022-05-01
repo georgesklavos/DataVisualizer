@@ -40,7 +40,7 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] != 2) {
                                             } ?>" aria-current="page" href="../../index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php if (checkUrl("/dashboard/user/map.php")) {
+                        <a class="nav-link <?php if (checkUrl("/dashboard/user/countryStats.php")) {
                                                 echo 'active';
                                             } ?>" href="/dashboard/user/countryStats.php">Country stats</a>
                     </li>
