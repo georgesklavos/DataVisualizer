@@ -1,13 +1,3 @@
-<?php
-// session_start();
-// session_destroy();
-
-// if (isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
-//     session_destroy();
-//     header("location: /login.php");
-// }
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +7,7 @@
 
 <body>
     <?php
-
+    //check if the incoming value is contained in the url
     function checkUrl($value)
     {
         if (str_contains($_SERVER["REQUEST_URI"], $value)) {

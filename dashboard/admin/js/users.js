@@ -14,6 +14,7 @@ let emailErr = document.getElementById("invalidEmail");
 let passwordErr = document.getElementById("invalidPassword");
 let countryErr = document.getElementById("invalidCountry");
 
+//Validation function to check all the inputs
 async function checkData() {
   let valid = true;
   document.querySelectorAll(".invalid-feedback").forEach((el) => {
@@ -49,6 +50,7 @@ async function checkData() {
     emailErr.innerHTML = "Please enter email.";
     valid = false;
   } else {
+    //Check if the email already is in use
     await fetch(`/api/users/checkEmail.php?email=${email.value}`, {
       method: "POST",
     }).then((res) =>
@@ -78,6 +80,7 @@ async function checkData() {
   return valid;
 }
 
+//Reset the form
 function resetForm() {
   document.querySelectorAll("input").forEach((el) => {
     el.value = "";
@@ -89,9 +92,12 @@ document.getElementById("addUser").addEventListener("hide.bs.modal", () => {
   resetForm();
 });
 
+//Create user function
 async function createUser() {
+  //check the data
   if (await checkData()) {
     document.getElementById("createUserSpinner").hidden = false;
+    //Create user endpoint
     await fetch(`/api/users/create.php`, {
       method: "POST",
       body: JSON.stringify({
@@ -105,15 +111,16 @@ async function createUser() {
     });
 
     document.getElementById("createUserSpinner").hidden = true;
+    //reset form
     resetForm();
-    const successAlert = document.getElementById("successAlert");
 
-    const toast = new bootstrap.Toast(successAlert);
-    toast.show();
-
-    // let modal = bootstrap.Modal.getInstance(document.getElementById('addUser'))
-    // modal.hide();
     document.getElementById("closeAddUser").click();
     location.reload();
+
+    // //Show success alert
+    // const successAlert = document.getElementById("successAlert");
+
+    // const toast = new bootstrap.Toast(successAlert);
+    // toast.show();
   }
 }

@@ -2,12 +2,6 @@
 // Initialize the session
 session_start();
 
-// Check if the user is already logged in, if yes then redirect him to welcome page
-// if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-//     header("location: index.php");
-//     exit;
-// }
-
 // Include config file
 require_once "config.php";
 
@@ -48,9 +42,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if email is empty
     if (empty(trim($_POST["email"]))) {
         $email_err = "Please enter email.";
-    }else if(checkEmail(trim($_POST["email"])) == 'true') {
+    } else if (checkEmail(trim($_POST["email"])) == 'true') {
         $email_err = "Email already in use.";
-    }else {
+    } else {
         $email = trim($_POST["email"]);
     }
 
@@ -61,26 +55,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password = trim($_POST["password"]);
     }
 
-    if($_POST['country'] == 'Choose a country' ) {
+    //Check if country is empty
+    if ($_POST['country'] == 'Choose a country') {
         $country_err = "Please select a country";
-    }else {
+    } else {
         $countryId = $_POST['country'];
     }
 
+    //If we dont have any error create the user
     if (empty($firstName_err) && empty($lastName_err) && empty($birthDate_err) && empty($email_err) && empty($password_err)) {
-
+        //Create the user
         createUser($firstName, $lastName, $birthDate, $email, $password, $countryId);
+        //Login the created user
         $user = userLogin($email, $password);
         if ($user) {
+            //Start the session
             session_start();
-
+            //Set variables for the session
             $_SESSION["loggedin"] = true;
             $_SESSION["id"] = $user['_id'];
             $_SESSION["email"] = $user['email'];
             $_SESSION["role"] = $user['role'];
-            //   Redirect user to welcome page
+            if (isset($user['country'])) {
+                $_SESSION['countryId'] = $user['country'];
+            }
+            //Redirect user to dashboard page
             header("location: index.php");
-            // var_dump($_SESSION);
         }
     }
 }

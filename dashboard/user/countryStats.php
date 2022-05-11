@@ -1,11 +1,10 @@
-
 <?php
 session_start();
-// session_destroy();
 
+//check if the user is logged in
 if (isset($_SESSION["role"]) && $_SESSION["role"] != 2) {
-  session_destroy();
-  header("location: /login.php");
+    session_destroy();
+    header("location: /login.php");
 }
 ?>
 
@@ -23,6 +22,7 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] != 2) {
 
 <body>
     <?php
+    //Include the navigation bar file
     include($_SERVER['DOCUMENT_ROOT'] . "/dashboard/user/navBar.php");
     ?>
     <span id="usersCountry" hidden><?= $_SESSION['countryId']; ?></span>

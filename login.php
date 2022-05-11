@@ -8,9 +8,6 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     exit;
 }
 
-// Include config file
-// require_once "config.php";
-
 // Define variables and initialize with empty values
 $email = $password = "";
 $email_err = $password_err = $login_err = "";
@@ -34,21 +31,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($email_err) && empty($password_err)) {
         require "./models/users.php";
 
-        // createUser("test","lastName", "20/05/2022", "test1@gmail.com", "12345");
+        //try to login the user
         $user = userLogin($_POST["email"], $_POST["password"]);
         if ($user) {
+            //If the email and password are correct in the database initialize the session
             session_start();
-
+            //Set variables in the session for the current user
             $_SESSION["loggedin"] = true;
             $_SESSION["id"] = $user['_id'];
             $_SESSION["email"] = $user['email'];
             $_SESSION["role"] = $user['role'];
-            if(isset($user['country'])) {
+            if (isset($user['country'])) {
                 $_SESSION['countryId'] = $user['country'];
             }
-            //   Redirect user to welcome page
+            //Redirect user to dashboard page
             header("location: index.php");
-            // var_dump($_SESSION);
         }
     }
 }

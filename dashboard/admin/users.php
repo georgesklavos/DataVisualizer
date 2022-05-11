@@ -1,7 +1,7 @@
 <?php
 session_start();
-// session_destroy();
-// error_log(print_r($_SESSION, TRUE));
+
+//check if the user is logged in
 if (!isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
     session_destroy();
     header("location: /login.php");
@@ -12,9 +12,12 @@ if (!isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
 <html lang="en">
 
 <body>
-    <?php include($_SERVER['DOCUMENT_ROOT'] . "/dashboard/admin/navBar.php");
+    <?php
+    //Load the navigation bar file and the reuired functions
+    include($_SERVER['DOCUMENT_ROOT'] . "/dashboard/admin/navBar.php");
     require $_SERVER['DOCUMENT_ROOT'] . "/models/users.php";
     require $_SERVER['DOCUMENT_ROOT'] . "/models/countries.php";
+    //Get the users and the countries from our database
     $users = findUsers();
     $countries = getCountries();
 
@@ -23,7 +26,7 @@ if (!isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUser">Create user</button>
     </div>
 
-    <div class="toast-container position-absolute top-0 end-0 p-3" style="z-index: 1056;">
+    <!-- <div class="toast-container position-absolute top-0 end-0 p-3" style="z-index: 1056;">
         <div id="successAlert" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
@@ -32,8 +35,8 @@ if (!isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
-    </div>
-
+    </div> -->
+    <!-- Create user form -->
     <div class="modal fade" id="addUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addUser" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
@@ -91,6 +94,7 @@ if (!isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
 
     <div class="card border-0">
         <div class="card-body pt-0">
+            <!-- Table that shows our users from the database -->
             <table class="table">
                 <thead>
                     <tr>

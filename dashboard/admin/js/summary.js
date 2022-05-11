@@ -1,11 +1,14 @@
+//Select the requirement elements from the DOM
 let selectedCountry = document.getElementById("countrySummary");
 const selectedFrom = document.getElementById("fromPeriod");
 const selectedTo = document.getElementById("toPeriod");
 const searchButton = document.getElementById("searchForData");
 const loader = document.getElementById("loader");
+//Create global variables
 let resultSummary = {};
 let map;
 
+//Check if the required fields have values
 function checkForSelectedData() {
   searchButton.disabled =
     (selectedCountry != "Choose a country" &&
@@ -15,25 +18,31 @@ function checkForSelectedData() {
       : true;
 }
 
+//Change event for the from date
 selectedFrom.addEventListener("change", function () {
   checkForSelectedData();
   selectedTo.disabled = false;
   selectedTo.setAttribute("min", selectedFrom.value);
 });
 
+//Change event for the to date
 selectedTo.addEventListener("change", function () {
   checkForSelectedData();
 });
 
+//Initialize bar chart
 function loadTotalBarChart() {
-   const checkBarChart =  Chart.getChart("totalSummaryBarChart");
-    if (checkBarChart != undefined) {
-        checkBarChart.destroy();
-      }
-  //Total bar chart
+  const checkBarChart = Chart.getChart("totalSummaryBarChart");
 
+  //Check if bar chart exists and destroy it
+  if (checkBarChart != undefined) {
+    checkBarChart.destroy();
+  }
+
+  //Total bar chart labels
   const totalLabels = ["Total confirmed", "Deaths"];
 
+  //Load total bar chart data
   const totalData = {
     labels: totalLabels,
     datasets: [
@@ -46,29 +55,34 @@ function loadTotalBarChart() {
     ],
   };
 
+  //Total bar chart config
   const totalConfig = {
     type: "bar",
     data: totalData,
     options: {},
   };
 
+  //Create bar chart
   const totalBarChart = new Chart(
     document.getElementById("totalSummaryBarChart"),
     totalConfig
   );
 }
 
+//Initialize line chart
 function loadLineChart() {
-    const checkLineChart =  Chart.getChart("summaryLineChart");
-    if (checkLineChart != undefined) {
-        checkLineChart.destroy();
-      }
-  //Line chart
+  const checkLineChart = Chart.getChart("summaryLineChart");
+
+  //Check if line chart exists end destroy it
+  if (checkLineChart != undefined) {
+    checkLineChart.destroy();
+  }
 
   let labels = [];
   let confirmedDataset = [];
   let deathsDataset = [];
 
+  //Create line chart data
   resultSummary.covidData.forEach((el) => {
     let date = new Date(el.Date);
     labels.push(date.toLocaleDateString("en-US"));
@@ -76,6 +90,7 @@ function loadLineChart() {
     deathsDataset.push(el.Deaths);
   });
 
+  //Line chart labels
   const totalData = {
     labels,
     datasets: [
@@ -96,6 +111,7 @@ function loadLineChart() {
     ],
   };
 
+  //Line chart config
   const totalConfig = {
     type: "line",
     data: totalData,
@@ -105,34 +121,33 @@ function loadLineChart() {
     },
   };
 
+  //Create line chart
   const lineChart = new Chart(
     document.getElementById("summaryLineChart"),
     totalConfig
   );
 }
 
+//Create map
 function loadMap() {
-    
-    console.log(map);
-    if(map) {
-        map.remove();
-    }
-    map = L.map("countryMap").setView([39.07, 21.82], 2);
+  //Check if map exists end destroy it
+  if (map) {
+    map.remove();
+  }
+  map = L.map("countryMap").setView([39.07, 21.82], 2);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution:
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map);
-  console.log(resultSummary.location.geojson);
+
+  //Load geojson data for the selected country and adjust the bounds of the map
   let geoJson = L.geoJSON(resultSummary.location.geojson).addTo(map);
   map.fitBounds(geoJson.getBounds());
 }
 
 searchButton.addEventListener("click", async function () {
-  console.log("search");
-  console.log(selectedCountry);
-  console.log(selectedFrom.value);
-  console.log(selectedTo.value);
   loader.hidden = false;
+  //Fetch the data for the country summary
   await fetch(
     `/api/summary/countrySummary.php?countryId=${selectedCountry.value}&from=${selectedFrom.value}&to=${selectedTo.value}`
   )
@@ -140,7 +155,8 @@ searchButton.addEventListener("click", async function () {
     .then((data) => {
       resultSummary = data;
     });
-  console.log(resultSummary);
+
+  //Create bar, line chart and the map
   loadTotalBarChart();
   loadMap();
   loadLineChart();

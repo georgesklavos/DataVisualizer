@@ -1,8 +1,7 @@
 <?php
 session_start();
-// session_destroy();
 
-
+//check if the user is logged in
 if (!isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
     session_destroy();
     header("location: /login.php");
@@ -24,15 +23,15 @@ if (!isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
 
 <body>
     <?php
-
+    //include the navigation bar file and the dashboard functions
     include("./dashboard/admin/navBar.php");
     require_once $_SERVER['DOCUMENT_ROOT'] . "/models/dashboard.php";
-    // require_once $_SERVER['DOCUMENT_ROOT'] . "/models/countries.php";
 
+    //Fetch from the api the data
     fetchDashboardData();
 
+    //Get from the database the dashboard data
     $dashboarData = getDashboard();
-    // $countries = getCountries();
     ?>
 
     <h3 class="text-center">Data for: <?= date('Y-m-d', strtotime($dashboarData['Date'])); ?></h3>
@@ -75,17 +74,16 @@ if (!isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
     </div>
     <script>
         //Create the map
-
         var map = L.map('map').setView([39.07, 21.82], 2);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
+        //Load in javascript the data for the countries
         const countriesInfo = <?= json_encode($dashboarData['Countries']); ?>;
 
-        // console.log(countriesInfo);
-
+        //Create the pins and add the data for each country
         countriesInfo.forEach((el) => {
             if (el.info) {
                 L.marker([el.info.lat, el.info.lon]).addTo(map)
@@ -104,13 +102,13 @@ if (!isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
 
 
 
-        //Total bar chart
-
+        //Total bar chart labels
         const totalLabels = [
             "Total confirmed",
             "Deaths"
         ];
 
+        //Total bar chart data
         const totalData = {
             labels: totalLabels,
             datasets: [{
@@ -121,24 +119,27 @@ if (!isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
             }]
         };
 
+        //Total bar chart config
         const totalConfig = {
             type: 'bar',
             data: totalData,
             options: {}
         };
 
+        //Create total bar chart
         const totalBarChart = new Chart(
             document.getElementById('totalBarChart'),
             totalConfig
         );
 
 
-        // new or daily data
+        //New or daily bar chart labels
         const labels = [
             "New confirmed",
             "Deaths"
         ];
 
+        //Bar chart data
         const data = {
             labels: labels,
             datasets: [{
@@ -149,12 +150,14 @@ if (!isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
             }]
         };
 
+        //Bar chart config
         const config = {
             type: 'bar',
             data: data,
             options: {}
         };
 
+        //Create new or daily bar chart
         const newBarChart = new Chart(
             document.getElementById('newBarChart'),
             config

@@ -1,11 +1,11 @@
 <?php
 session_start();
-// session_destroy();
 
+//check if the user is logged in
 if (!isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
     session_destroy();
     header("location: /login.php");
-} 
+}
 ?>
 
 <!DOCTYPE html>
@@ -22,8 +22,11 @@ if (!isset($_SESSION["role"]) && $_SESSION["role"] != 1) {
 
 <body>
     <?php
+    //include navigation bar file and countries functions
     include($_SERVER['DOCUMENT_ROOT'] . "/dashboard/admin/navBar.php");
     require $_SERVER['DOCUMENT_ROOT'] . "/models/countries.php";
+
+    //Get countries from the database
     $countries = getCountries();
     ?>
 
